@@ -1,11 +1,16 @@
 package problem101;
 
+//101 - The Blocks Problem
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
+
+	private static ArrayList<ArrayList<Integer>> position = new ArrayList<ArrayList<Integer>>();
 
 	/**
 	 * @param args
@@ -17,53 +22,225 @@ public class Main {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String input;
 
-		// ２つの整数の入力を受け付ける
 		while ((input = br.readLine()) != null) {
+
+			// 0～25の整数でブロックの数を入力する
 			StringTokenizer st = new StringTokenizer(input, " ");
+			String blocknum = st.nextToken();
+			int n = Integer.parseInt(blocknum);
 
-			long i = Long.parseLong(st.nextToken());
-			long j = Long.parseLong(st.nextToken());
+			// ブロックの初期化
+			initBlocks(n);
+			
 
-			long i_org = i;
-			long j_org = j;
-			long maxsteps = -1;
+			// コマンドを入力する
+			while (true) {
+				input = br.readLine();
+				st = new StringTokenizer(input, " ");
+				String command1 = st.nextToken();
+				String block_a = null;
+				String command2 = null;
+				String block_b = null;
 
-			if (i > j) {
+				if (!command1.equals("quit")) {
+					block_a = st.nextToken();
+					command2 = st.nextToken();
+					block_b = st.nextToken();
+				} else {
+					// quitコマンドが入力される結果を出力して終了
+					printBlocks();
+					return;
+				}
 
-				long tmp = i;
-				i = j;
-				j = tmp;
+				int a = Integer.parseInt(block_a);
+				int b = Integer.parseInt(block_b);
+
+		
+				// (move,pile) x (over,onto)で4パターンに場合分け
+				if (command1.equals("move")) {
+					if (command2.equals("over")) {
+						moveOver(a, b);
+					} else if (command2.equals("onto")) {
+						moveOnto(a, b);
+					}
+
+				} else if (command1.equals("pile")) {
+					if (command2.equals("over")) {
+						pileOver(a, b);
+					} else if (command2.equals("onto")) {
+						pileOnto(a, b);
+					}
+
+				}
+
 			}
+		}
+	}
 
-			// はじめに入力したiの方が大きい場合はスワップする
-			for (; i <= j; i++) {
+	/**
+	 * 番号がaのブロックと、番号がbのブロックの上スタックを 初期位置に戻してから、番号がaのブロックを番号bが含まれているスタックの上に積む
+	 * 
+	 * @param a
+	 *            move するブロック番号
+	 * @param b
+	 *            move先ブロック
+	 */
+	private static void moveOnto(int a, int b) {
 
-				long steps = countSteps(i);
+		initPosition(a);
+		initPosition(b);
+		move(a, b);
+	}
 
-				if (steps > maxsteps) {
-					maxsteps = steps;
+	/**
+	 * 番号がaのブロックの上に詰まれたブロックを初期位置に戻してから、 番号bが含まれているスタックの上に積む
+	 * 
+	 * @param a
+	 *            move するブロック番号
+	 * @param b
+	 *            move先ブロック
+	 */
+	private static void moveOver(int a, int b) {
+		// TODO Auto-generated method stub
+		initPosition(a);
+		move(a, b);
+	}
+
+	/**
+	 * 番号がaのブロックの上のスタックごと、番号がbのブロックが含まれるスタックの上に積む
+	 * 
+	 * @param a
+	 *            pileするスタックの一番下のブロック
+	 * @param b
+	 *            pile先のブロック
+	 */
+	private static void pileOver(int a, int b) {
+		// TODO Auto-generated method stub
+		pile(a, b);
+	}
+
+	/**
+	 * 番号がbのブロックの上のスタックを初期位置に戻す。番号がaのブロックを含むスタックごと、番号がbのブロックの上に積む
+	 * 
+	 * @param a
+	 *            pileするスタックの一番下のブロック
+	 * @param b
+	 *            pile先のブロック
+	 */
+	private static void pileOnto(int a, int b) {
+		// TODO Auto-generated method stub
+		initPosition(b);
+		pile(a, b);
+	}
+
+	private static void initBlocks(int n) {
+	
+		for (int i = 0; i < n; i++) {
+			ArrayList<Integer> blocks = new ArrayList<Integer>();
+			blocks.add(i);
+			position.add(blocks);
+		}
+	}
+
+	/**
+	 * ブロックの状態を出力する
+	 */
+	private static void printBlocks() {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < position.size(); i++) {
+
+			System.out.print(i + ":");
+
+			for (int j = 0; j < position.get(i).size(); j++) {
+				System.out.print(position.get(i).get(j) + " ");
+			}
+			System.out.print("\n");
+		}
+	}
+
+	/**
+	 * aをbにmoveする
+	 * 
+	 * @param a
+	 * @param b
+	 */
+	private static void move(int a, int b) {
+
+		Block aBlock = searchBlock(a);
+		Block bBlock = searchBlock(b);
+
+		// aとbが同一スタックでない
+		if (aBlock.position != bBlock.position) {
+			int num = position.get(aBlock.position).get(aBlock.num);
+			position.get(aBlock.position).remove(aBlock.num);
+			position.get(bBlock.position).add(num);
+		} else {
+			// 同一positionのスタックの場合は何もしない
+		}
+	}
+
+	/**
+	 * aをbにpileする
+	 * 
+	 * @param a
+	 * @param b
+	 */
+	private static void pile(int a, int b) {
+		Block aBlock = searchBlock(a);
+		Block bBlock = searchBlock(b);
+
+		// aとbが同一スタックでない
+		if (aBlock.position != bBlock.position) {
+			while (position.get(aBlock.position).size() > aBlock.num) {
+				int num = position.get(aBlock.position).get(aBlock.num);
+				position.get(aBlock.position).remove(aBlock.num);
+				position.get(bBlock.position).add(num);
+			}
+		} else {
+			// 同一positionのスタックの場合は何もしない
+		}
+	}
+
+	/**
+	 * 番号がnのブロックを検索してBlock返す
+	 * 
+	 * @param n
+	 * @return 検索結果のBlock
+	 */
+	private static Block searchBlock(int n) {
+
+		Block block = new Block();
+		for (int i = 0; i < position.size(); i++) {
+			for (int j = 0; j < position.get(i).size(); j++) {
+				if (position.get(i).get(j) == n) {
+					block.position = i;
+					block.num = j;
+					return block;
 				}
 			}
+		}
 
-			// 結果の出力
-			System.out.println(i_org + " " + j_org + " " + maxsteps);
+		return block;
+	}
+
+	/**
+	 * n個のposition, n個のBlockを持つ空間を初期化
+	 * 
+	 * @param n
+	 */
+	private static void initPosition(int n) {
+		Block block = searchBlock(n);
+
+		while (position.get(block.position).size() > block.num + 1) {
+			int num = position.get(block.position).get(block.num + 1);
+			position.get(block.position).remove(block.num + 1);
+			position.get(num).add(num);
 		}
 	}
 
-	// ステップ数をカウントするメソッド
-	private static long countSteps(long i) {
+}
 
-		long steps = 1;
-		long n = i;
-
-		while (n > 1) {
-			if (n % 2 == 1) {
-				n = 3 * n + 1;
-			} else {
-				n = n / 2;
-			}
-			steps++;
-		}
-		return steps;
-	}
+class Block {
+	int position; // Blockの位置
+	int num;// Blockの番号
 }
