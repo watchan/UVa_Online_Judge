@@ -31,7 +31,6 @@ public class Main {
 
 			// ブロックの初期化
 			initBlocks(n);
-			
 
 			// コマンドを入力する
 			while (true) {
@@ -55,25 +54,124 @@ public class Main {
 				int a = Integer.parseInt(block_a);
 				int b = Integer.parseInt(block_b);
 
-		
 				// (move,pile) x (over,onto)で4パターンに場合分け
-				if (command1.equals("move")) {
-					if (command2.equals("over")) {
-						moveOver(a, b);
-					} else if (command2.equals("onto")) {
-						moveOnto(a, b);
-					}
+				if (blockCheckIs(a, b))
+					if (command1.equals("move")) {
+						if (command2.equals("over")) {
+							moveOver(a, b);
+						} else if (command2.equals("onto")) {
+							moveOnto(a, b);
+						}
 
-				} else if (command1.equals("pile")) {
-					if (command2.equals("over")) {
-						pileOver(a, b);
-					} else if (command2.equals("onto")) {
-						pileOnto(a, b);
-					}
+					} else if (command1.equals("pile")) {
+						if (command2.equals("over")) {
+							pileOver(a, b);
+						} else if (command2.equals("onto")) {
+							pileOnto(a, b);
+						}
 
-				}
+					}
 
 			}
+		}
+	}
+
+	private static boolean blockCheckIs(int a, int b) {
+
+		Block aBlock = searchBlock(a);
+		Block bBlock = searchBlock(b);
+
+		if (a == b) {
+			return false;
+		} else if (aBlock.position == bBlock.position) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	/**
+	 * n個のposition, n個のブロックの空間を初期化する
+	 * 
+	 * @param n
+	 */
+	private static void initBlocks(int n) {
+
+		for (int i = 0; i < n; i++) {
+			ArrayList<Integer> blocks = new ArrayList<Integer>();
+			blocks.add(i);
+			position.add(blocks);
+		}
+	}
+
+	/**
+	 * n個のposition, n個のBlockを持つ空間を初期化
+	 * 
+	 * @param n
+	 */
+	private static void initPosition(int n) {
+		Block block = searchBlock(n);
+
+		while (position.get(block.position).size() > block.num + 1) {
+			int num = position.get(block.position).get(block.num + 1);
+			position.get(block.position).remove(block.num + 1);
+			position.get(num).add(num);
+		}
+	}
+
+	/**
+	 * 番号がnのブロックを検索してBlock返す
+	 * 
+	 * @param n
+	 * @return 検索結果のBlock
+	 */
+	private static Block searchBlock(int n) {
+
+		Block block = new Block();
+		for (int i = 0; i < position.size(); i++) {
+			for (int j = 0; j < position.get(i).size(); j++) {
+				if (position.get(i).get(j) == n) {
+					block.position = i;
+					block.num = j;
+					return block;
+				}
+			}
+		}
+
+		return block;
+	}
+
+	/**
+	 * aをbにmoveする
+	 * 
+	 * @param a
+	 * @param b
+	 */
+	private static void move(int a, int b) {
+
+		Block aBlock = searchBlock(a);
+		Block bBlock = searchBlock(b);
+
+		int num = position.get(aBlock.position).get(aBlock.num);
+		position.get(aBlock.position).remove(aBlock.num);
+		position.get(bBlock.position).add(num);
+
+	}
+
+	/**
+	 * aをbにpileする
+	 * 
+	 * @param a
+	 * @param b
+	 */
+	private static void pile(int a, int b) {
+		Block aBlock = searchBlock(a);
+		Block bBlock = searchBlock(b);
+
+		while (position.get(aBlock.position).size() > aBlock.num) {
+			int num = position.get(aBlock.position).get(aBlock.num);
+			position.get(aBlock.position).remove(aBlock.num);
+			position.get(bBlock.position).add(num);
 		}
 	}
 
@@ -101,7 +199,6 @@ public class Main {
 	 *            move先ブロック
 	 */
 	private static void moveOver(int a, int b) {
-		// TODO Auto-generated method stub
 		initPosition(a);
 		move(a, b);
 	}
@@ -133,15 +230,6 @@ public class Main {
 		pile(a, b);
 	}
 
-	private static void initBlocks(int n) {
-	
-		for (int i = 0; i < n; i++) {
-			ArrayList<Integer> blocks = new ArrayList<Integer>();
-			blocks.add(i);
-			position.add(blocks);
-		}
-	}
-
 	/**
 	 * ブロックの状態を出力する
 	 */
@@ -152,89 +240,9 @@ public class Main {
 			System.out.print(i + ":");
 
 			for (int j = 0; j < position.get(i).size(); j++) {
-				System.out.print(position.get(i).get(j) + " ");
+				System.out.print(" " + position.get(i).get(j));
 			}
 			System.out.print("\n");
-		}
-	}
-
-	/**
-	 * aをbにmoveする
-	 * 
-	 * @param a
-	 * @param b
-	 */
-	private static void move(int a, int b) {
-
-		Block aBlock = searchBlock(a);
-		Block bBlock = searchBlock(b);
-
-		// aとbが同一スタックでない
-		if (aBlock.position != bBlock.position) {
-			int num = position.get(aBlock.position).get(aBlock.num);
-			position.get(aBlock.position).remove(aBlock.num);
-			position.get(bBlock.position).add(num);
-		} else {
-			// 同一positionのスタックの場合は何もしない
-		}
-	}
-
-	/**
-	 * aをbにpileする
-	 * 
-	 * @param a
-	 * @param b
-	 */
-	private static void pile(int a, int b) {
-		Block aBlock = searchBlock(a);
-		Block bBlock = searchBlock(b);
-
-		// aとbが同一スタックでない
-		if (aBlock.position != bBlock.position) {
-			while (position.get(aBlock.position).size() > aBlock.num) {
-				int num = position.get(aBlock.position).get(aBlock.num);
-				position.get(aBlock.position).remove(aBlock.num);
-				position.get(bBlock.position).add(num);
-			}
-		} else {
-			// 同一positionのスタックの場合は何もしない
-		}
-	}
-
-	/**
-	 * 番号がnのブロックを検索してBlock返す
-	 * 
-	 * @param n
-	 * @return 検索結果のBlock
-	 */
-	private static Block searchBlock(int n) {
-
-		Block block = new Block();
-		for (int i = 0; i < position.size(); i++) {
-			for (int j = 0; j < position.get(i).size(); j++) {
-				if (position.get(i).get(j) == n) {
-					block.position = i;
-					block.num = j;
-					return block;
-				}
-			}
-		}
-
-		return block;
-	}
-
-	/**
-	 * n個のposition, n個のBlockを持つ空間を初期化
-	 * 
-	 * @param n
-	 */
-	private static void initPosition(int n) {
-		Block block = searchBlock(n);
-
-		while (position.get(block.position).size() > block.num + 1) {
-			int num = position.get(block.position).get(block.num + 1);
-			position.get(block.position).remove(block.num + 1);
-			position.get(num).add(num);
 		}
 	}
 
