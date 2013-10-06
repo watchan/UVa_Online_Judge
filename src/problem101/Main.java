@@ -24,15 +24,15 @@ public class Main {
 
 		while ((input = br.readLine()) != null) {
 
-			// 0`25‚Ì®”‚ÅƒuƒƒbƒN‚Ì”‚ğ“ü—Í‚·‚é
+			// 0ã€œ25ã®æ•´æ•°ã§ãƒ–ãƒ­ãƒƒã‚¯ã®æ•°ã‚’å…¥åŠ›ã™ã‚‹
 			StringTokenizer st = new StringTokenizer(input, " ");
 			String blocknum = st.nextToken();
 			int n = Integer.parseInt(blocknum);
 
-			// ƒuƒƒbƒN‚Ì‰Šú‰»
+			// ãƒ–ãƒ­ãƒƒã‚¯ã®åˆæœŸåŒ–
 			initBlocks(n);
 
-			// ƒRƒ}ƒ“ƒh‚ğ“ü—Í‚·‚é
+			// ã‚³ãƒãƒ³ãƒ‰ã‚’å…¥åŠ›ã™ã‚‹
 			while (true) {
 				input = br.readLine();
 				st = new StringTokenizer(input, " ");
@@ -46,7 +46,7 @@ public class Main {
 					command2 = st.nextToken();
 					block_b = st.nextToken();
 				} else {
-					// quitƒRƒ}ƒ“ƒh‚ª“ü—Í‚³‚ê‚éŒ‹‰Ê‚ğo—Í‚µ‚ÄI—¹
+					// quitã‚³ãƒãƒ³ãƒ‰ãŒå…¥åŠ›ã•ã‚Œã‚‹çµæœã‚’å‡ºåŠ›ã—ã¦çµ‚äº†
 					printBlocks();
 					return;
 				}
@@ -54,7 +54,7 @@ public class Main {
 				int a = Integer.parseInt(block_a);
 				int b = Integer.parseInt(block_b);
 
-				// (move,pile) x (over,onto)‚Å4ƒpƒ^[ƒ“‚Éê‡•ª‚¯
+				// (move,pile) x (over,onto)ã§4ãƒ‘ã‚¿ãƒ¼ãƒ³ã«å ´åˆåˆ†ã‘
 				if (blockCheckIs(a, b))
 					if (command1.equals("move")) {
 						if (command2.equals("over")) {
@@ -76,6 +76,15 @@ public class Main {
 		}
 	}
 
+	/**
+	 * å…¥åŠ›å€¤ãƒã‚§ãƒƒã‚¯
+	 * 
+	 * @param a
+	 *            å…¥åŠ›å€¤a
+	 * @param b
+	 *            å…¥åŠ›å€¤b
+	 * @return aã¨bãŒç­‰ã—ã„å ´åˆã€aã®positionã¨bã®positionãŒç­‰ã—ã„å ´åˆã¯falseã‚’è¿”ã™ã€‚ãã‚Œä»¥å¤–ã®å ´åˆã¯trueã‚’è¿”ã™ã€‚
+	 */
 	private static boolean blockCheckIs(int a, int b) {
 
 		Block aBlock = searchBlock(a);
@@ -91,7 +100,7 @@ public class Main {
 	}
 
 	/**
-	 * nŒÂ‚Ìposition, nŒÂ‚ÌƒuƒƒbƒN‚Ì‹óŠÔ‚ğ‰Šú‰»‚·‚é
+	 * nå€‹ã®position, nå€‹ã®ãƒ–ãƒ­ãƒƒã‚¯ã®ç©ºé–“ã‚’åˆæœŸåŒ–ã™ã‚‹
 	 * 
 	 * @param n
 	 */
@@ -105,7 +114,7 @@ public class Main {
 	}
 
 	/**
-	 * nŒÂ‚Ìposition, nŒÂ‚ÌBlock‚ğ‚Â‹óŠÔ‚ğ‰Šú‰»
+	 * nå€‹ã®position, nå€‹ã®Blockã‚’æŒã¤ç©ºé–“ã‚’åˆæœŸåŒ–
 	 * 
 	 * @param n
 	 */
@@ -120,10 +129,10 @@ public class Main {
 	}
 
 	/**
-	 * ”Ô†‚ªn‚ÌƒuƒƒbƒN‚ğŒŸõ‚µ‚ÄBlock•Ô‚·
+	 * ç•ªå·ãŒnã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’æ¤œç´¢ã—ã¦Blockè¿”ã™
 	 * 
 	 * @param n
-	 * @return ŒŸõŒ‹‰Ê‚ÌBlock
+	 * @return æ¤œç´¢çµæœã®Block
 	 */
 	private static Block searchBlock(int n) {
 
@@ -142,7 +151,7 @@ public class Main {
 	}
 
 	/**
-	 * a‚ğb‚Émove‚·‚é
+	 * aã‚’bã«moveã™ã‚‹
 	 * 
 	 * @param a
 	 * @param b
@@ -159,7 +168,7 @@ public class Main {
 	}
 
 	/**
-	 * a‚ğb‚Épile‚·‚é
+	 * aã‚’bã«pileã™ã‚‹
 	 * 
 	 * @param a
 	 * @param b
@@ -176,12 +185,12 @@ public class Main {
 	}
 
 	/**
-	 * ”Ô†‚ªa‚ÌƒuƒƒbƒN‚ÆA”Ô†‚ªb‚ÌƒuƒƒbƒN‚ÌãƒXƒ^ƒbƒN‚ğ ‰ŠúˆÊ’u‚É–ß‚µ‚Ä‚©‚çA”Ô†‚ªa‚ÌƒuƒƒbƒN‚ğ”Ô†b‚ªŠÜ‚Ü‚ê‚Ä‚¢‚éƒXƒ^ƒbƒN‚Ìã‚ÉÏ‚Ş
+	 * ç•ªå·ãŒaã®ãƒ–ãƒ­ãƒƒã‚¯ã¨ã€ç•ªå·ãŒbã®ãƒ–ãƒ­ãƒƒã‚¯ã®ä¸Šã‚¹ã‚¿ãƒƒã‚¯ã‚’ åˆæœŸä½ç½®ã«æˆ»ã—ã¦ã‹ã‚‰ã€ç•ªå·ãŒaã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’ç•ªå·bãŒå«ã¾ã‚Œã¦ã„ã‚‹ã‚¹ã‚¿ãƒƒã‚¯ã®ä¸Šã«ç©ã‚€
 	 * 
 	 * @param a
-	 *            move ‚·‚éƒuƒƒbƒN”Ô†
+	 *            move ã™ã‚‹ãƒ–ãƒ­ãƒƒã‚¯ç•ªå·
 	 * @param b
-	 *            moveæƒuƒƒbƒN
+	 *            moveå…ˆãƒ–ãƒ­ãƒƒã‚¯
 	 */
 	private static void moveOnto(int a, int b) {
 
@@ -191,12 +200,12 @@ public class Main {
 	}
 
 	/**
-	 * ”Ô†‚ªa‚ÌƒuƒƒbƒN‚Ìã‚É‹l‚Ü‚ê‚½ƒuƒƒbƒN‚ğ‰ŠúˆÊ’u‚É–ß‚µ‚Ä‚©‚çA ”Ô†b‚ªŠÜ‚Ü‚ê‚Ä‚¢‚éƒXƒ^ƒbƒN‚Ìã‚ÉÏ‚Ş
+	 * ç•ªå·ãŒaã®ãƒ–ãƒ­ãƒƒã‚¯ã®ä¸Šã«è©°ã¾ã‚ŒãŸãƒ–ãƒ­ãƒƒã‚¯ã‚’åˆæœŸä½ç½®ã«æˆ»ã—ã¦ã‹ã‚‰ã€ ç•ªå·bãŒå«ã¾ã‚Œã¦ã„ã‚‹ã‚¹ã‚¿ãƒƒã‚¯ã®ä¸Šã«ç©ã‚€
 	 * 
 	 * @param a
-	 *            move ‚·‚éƒuƒƒbƒN”Ô†
+	 *            move ã™ã‚‹ãƒ–ãƒ­ãƒƒã‚¯ç•ªå·
 	 * @param b
-	 *            moveæƒuƒƒbƒN
+	 *            moveå…ˆãƒ–ãƒ­ãƒƒã‚¯
 	 */
 	private static void moveOver(int a, int b) {
 		initPosition(a);
@@ -204,12 +213,12 @@ public class Main {
 	}
 
 	/**
-	 * ”Ô†‚ªa‚ÌƒuƒƒbƒN‚Ìã‚ÌƒXƒ^ƒbƒN‚²‚ÆA”Ô†‚ªb‚ÌƒuƒƒbƒN‚ªŠÜ‚Ü‚ê‚éƒXƒ^ƒbƒN‚Ìã‚ÉÏ‚Ş
+	 * ç•ªå·ãŒaã®ãƒ–ãƒ­ãƒƒã‚¯ã®ä¸Šã®ã‚¹ã‚¿ãƒƒã‚¯ã”ã¨ã€ç•ªå·ãŒbã®ãƒ–ãƒ­ãƒƒã‚¯ãŒå«ã¾ã‚Œã‚‹ã‚¹ã‚¿ãƒƒã‚¯ã®ä¸Šã«ç©ã‚€
 	 * 
 	 * @param a
-	 *            pile‚·‚éƒXƒ^ƒbƒN‚Ìˆê”Ô‰º‚ÌƒuƒƒbƒN
+	 *            pileã™ã‚‹ã‚¹ã‚¿ãƒƒã‚¯ã®ä¸€ç•ªä¸‹ã®ãƒ–ãƒ­ãƒƒã‚¯
 	 * @param b
-	 *            pileæ‚ÌƒuƒƒbƒN
+	 *            pileå…ˆã®ãƒ–ãƒ­ãƒƒã‚¯
 	 */
 	private static void pileOver(int a, int b) {
 		// TODO Auto-generated method stub
@@ -217,12 +226,12 @@ public class Main {
 	}
 
 	/**
-	 * ”Ô†‚ªb‚ÌƒuƒƒbƒN‚Ìã‚ÌƒXƒ^ƒbƒN‚ğ‰ŠúˆÊ’u‚É–ß‚·B”Ô†‚ªa‚ÌƒuƒƒbƒN‚ğŠÜ‚ŞƒXƒ^ƒbƒN‚²‚ÆA”Ô†‚ªb‚ÌƒuƒƒbƒN‚Ìã‚ÉÏ‚Ş
+	 * ç•ªå·ãŒbã®ãƒ–ãƒ­ãƒƒã‚¯ã®ä¸Šã®ã‚¹ã‚¿ãƒƒã‚¯ã‚’åˆæœŸä½ç½®ã«æˆ»ã™ã€‚ç•ªå·ãŒaã®ãƒ–ãƒ­ãƒƒã‚¯ã‚’å«ã‚€ã‚¹ã‚¿ãƒƒã‚¯ã”ã¨ã€ç•ªå·ãŒbã®ãƒ–ãƒ­ãƒƒã‚¯ã®ä¸Šã«ç©ã‚€
 	 * 
 	 * @param a
-	 *            pile‚·‚éƒXƒ^ƒbƒN‚Ìˆê”Ô‰º‚ÌƒuƒƒbƒN
+	 *            pileã™ã‚‹ã‚¹ã‚¿ãƒƒã‚¯ã®ä¸€ç•ªä¸‹ã®ãƒ–ãƒ­ãƒƒã‚¯
 	 * @param b
-	 *            pileæ‚ÌƒuƒƒbƒN
+	 *            pileå…ˆã®ãƒ–ãƒ­ãƒƒã‚¯
 	 */
 	private static void pileOnto(int a, int b) {
 		// TODO Auto-generated method stub
@@ -231,7 +240,7 @@ public class Main {
 	}
 
 	/**
-	 * ƒuƒƒbƒN‚Ìó‘Ô‚ğo—Í‚·‚é
+	 * ãƒ–ãƒ­ãƒƒã‚¯ã®çŠ¶æ…‹ã‚’å‡ºåŠ›ã™ã‚‹
 	 */
 	private static void printBlocks() {
 		// TODO Auto-generated method stub
@@ -249,6 +258,6 @@ public class Main {
 }
 
 class Block {
-	int position; // Block‚ÌˆÊ’u
-	int num;// Block‚Ì”Ô†
+	int position; // Blockã®ä½ç½®
+	int num;// Blockã®ç•ªå·
 }
