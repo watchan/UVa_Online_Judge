@@ -27,30 +27,70 @@ public class Main {
 				inputnum[i] = Integer.parseInt(st.nextToken());
 			}
 
-			for (int i = 0; i < 9; i++) {
-				System.out.println(inputnum[i]);
-			}
-
-			printBin();
+			calcSteps();
 		}
 	}
 
-	private static void printBin() {
-		int bin1 = 0;
-		int bin2 = 0;
-		int bin3 = 0;
+	private static void calcSteps() {
+		int sum = 0;
+		int min = 0;
+		String str = "";
 
-		for (int i = 0; i < 3; i++) {
-			bin1 += inputnum[i];
-		}
-		for (int i = 3; i < 6; i++) {
-			bin2 += inputnum[i];
-		}
-		for (int i = 6; i < 9; i++) {
-			bin3 += inputnum[i];
+		// BCG 12 34 68
+		sum = inputnum[1] + inputnum[2] + inputnum[3] + inputnum[4]
+				+ inputnum[6] + inputnum[8];
+
+		min = sum;
+		str = "BCG";
+		sum = 0;
+
+		// BGC 12 35 67
+		sum = inputnum[1] + inputnum[2] + inputnum[3] + inputnum[5]
+				+ inputnum[6] + inputnum[7];
+
+		if (sum < min) {
+			min = sum;
+			str = "BGC";
 		}
 
-		System.out.println(bin1 + " " + bin2 + " " + bin3);
+		sum = 0;
+
+		// CBG 01 45 68
+		sum = inputnum[0] + inputnum[1] + inputnum[4] + inputnum[5]
+				+ inputnum[6] + inputnum[8];
+		if (sum < min) {
+			min = sum;
+			str = "CBG";
+		}
+
+		sum = 0;
+
+		// CGB 01 35 78
+		sum = inputnum[0] + inputnum[1] + inputnum[3] + inputnum[5]
+				+ inputnum[7] + inputnum[8];
+		if (sum < min) {
+			min = sum;
+			str = "CGB";
+		}
+		sum = 0;
+
+		// GBC 02 45 67
+		sum = inputnum[0] + inputnum[2] + inputnum[4] + inputnum[5]
+				+ inputnum[6] + inputnum[7];
+		if (sum < min) {
+			min = sum;
+			str = "GBC";
+		}
+		sum = 0;
+
+		// GCB 02 34 78
+		sum = inputnum[0] + inputnum[2] + inputnum[3] + inputnum[4]
+				+ inputnum[7] + inputnum[8];
+		if (sum < min) {
+			min = sum;
+			str = "GCB";
+		}
+
+		System.out.println(str + " " + min);
 	}
-
 }
